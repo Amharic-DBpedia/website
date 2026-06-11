@@ -71,6 +71,10 @@ deployment as separate workflows. The frontend is deployed to:
 
 <https://amharic-dbpedia.github.io/website/>
 
+Before the first Actions deployment, a repository administrator must change
+**Settings > Pages > Build and deployment > Source** to **GitHub Actions**. Subsequent
+pushes to `main` deploy automatically.
+
 ## Extraction Framework Boundary
 
 The backend expects the DBpedia Extraction Framework checkout at
