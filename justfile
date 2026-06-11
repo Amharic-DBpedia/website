@@ -33,12 +33,14 @@ build:
     pnpm build
 
 check:
-    pnpm format:check
-    pnpm lint
-    pnpm typecheck
-    pnpm test
-    pnpm build
-    pnpm check:api
+    pnpm check:frontend
+    pnpm check:backend
+
+check-frontend:
+    pnpm check:frontend
+
+check-backend:
+    pnpm check:backend
 
 sanitize input output:
     cd backend && uv run python -m amdb.cli.sanitize --input "{{input}}" --output "{{output}}"
