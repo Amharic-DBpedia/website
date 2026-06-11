@@ -1,6 +1,7 @@
 import { chapterMetrics, newsItems, researchHighlights, resourceLinks } from "@amdb/content";
 import { pickLocalized } from "@amdb/core";
 import type { AppLayout } from "../app/layout";
+import { appHref } from "../app/paths";
 import { renderNewsItem } from "../components/news-item";
 import { clear, externalLink } from "../dom/html";
 import { renderResourceSearch } from "../features/search/resource-search";
@@ -26,11 +27,11 @@ export function renderHome(layout: AppLayout): void {
   heroActions.className = "hero-actions";
   const sparqlLink = document.createElement("a");
   sparqlLink.className = "button-link button-link--primary";
-  sparqlLink.href = "/sparql";
+  sparqlLink.href = appHref("/sparql");
   sparqlLink.textContent = "Open SPARQL";
   const statsLink = document.createElement("a");
   statsLink.className = "button-link";
-  statsLink.href = "/statistics";
+  statsLink.href = appHref("/statistics");
   statsLink.textContent = "View statistics";
   heroActions.append(sparqlLink, statsLink);
   copy.append(eyebrow, title, body, renderResourceSearch(layout), heroActions);
@@ -93,7 +94,7 @@ export function renderHome(layout: AppLayout): void {
   newsCopy.append(newsEyebrow, newsHeading);
   const newsArchive = document.createElement("a");
   newsArchive.className = "button-link";
-  newsArchive.href = "/news";
+  newsArchive.href = appHref("/news");
   newsArchive.textContent = "View all news";
   newsHeader.append(newsCopy, newsArchive);
 
@@ -114,7 +115,7 @@ export function renderHome(layout: AppLayout): void {
     card.className = "resource-card";
     if (link.image) {
       const image = document.createElement("img");
-      image.src = link.image;
+      image.src = appHref(link.image);
       image.alt = "";
       image.loading = "lazy";
       card.append(image);

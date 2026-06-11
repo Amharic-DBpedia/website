@@ -1,4 +1,5 @@
 import type { AppLayout } from "./layout";
+import { appHref, appRoutePath } from "./paths";
 
 type RouteHandler = (
   params: Record<string, string>,
@@ -90,15 +91,22 @@ export function installRouter(layout: AppLayout): void {
 }
 
 export async function navigate(href: string, layout: AppLayout, replace = false): Promise<void> {
-  const url = new URL(href, window.location.origin);
+  const url = new URL(appHref(href), window.location.origin);
   if (replace) history.replaceState({}, "", url);
   else history.pushState({}, "", url);
   await dispatch(url, layout);
 }
 
 export async function dispatch(url: URL, layout: AppLayout): Promise<void> {
+  const pathname = appRoutePath(url.pathname);
+  if (pathname === null) {
+    const { renderNotFound } = await import("../routes/not-found.route");
+    renderNotFound(layout);
+    return;
+  }
+
   for (const route of routes) {
-    const match = matchPath(route.pathname, url.pathname);
+    const match = matchPath(route.pathname, pathname);
     if (!match) continue;
     await route.handler(match, url, layout);
     layout.main.focus({ preventScroll: true });

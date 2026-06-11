@@ -1,5 +1,6 @@
 import type { NewsItem } from "@amdb/content";
 import { pickLocalized, type SupportedLanguage } from "@amdb/core";
+import { appHref } from "../app/paths";
 
 export type NewsItemVariant = "preview" | "featured" | "archive";
 
@@ -23,7 +24,7 @@ export function renderNewsItem(
 
   const title = document.createElement(variant === "featured" ? "h2" : "h3");
   const link = document.createElement("a");
-  link.href = item.href;
+  link.href = appHref(item.href);
   link.textContent = pickLocalized(item.title, language) ?? "";
   title.append(link);
 
@@ -35,7 +36,7 @@ export function renderNewsItem(
   if (variant !== "preview") {
     for (const related of item.links ?? []) {
       const relatedLink = document.createElement("a");
-      relatedLink.href = related.href;
+      relatedLink.href = appHref(related.href);
       relatedLink.textContent = pickLocalized(related.label, language) ?? "";
       relatedLinks.append(relatedLink);
     }
@@ -43,7 +44,7 @@ export function renderNewsItem(
 
   const action = document.createElement("a");
   action.className = "news-item__action";
-  action.href = item.href;
+  action.href = appHref(item.href);
   action.textContent = item.actionLabel
     ? (pickLocalized(item.actionLabel, language) ?? "Read related update")
     : "Read related update";

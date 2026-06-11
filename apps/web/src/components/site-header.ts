@@ -1,6 +1,7 @@
 import type { LocalizedText } from "@amdb/content";
 import { languages, type NavItem } from "@amdb/content";
 import type { SupportedLanguage } from "@amdb/core";
+import { appHref } from "../app/paths";
 
 interface SiteHeaderProps {
   readonly navigation: readonly NavItem[];
@@ -17,10 +18,10 @@ export function renderSiteHeader(props: SiteHeaderProps): HTMLElement {
   inner.className = "site-header__inner";
 
   const brand = document.createElement("a");
-  brand.href = "/";
+  brand.href = appHref("/");
   brand.className = "brand";
   const logo = document.createElement("img");
-  logo.src = "/assets/images/dbpedia_am_logo.png";
+  logo.src = appHref("/assets/images/dbpedia_am_logo.png");
   logo.alt = "";
   logo.width = 34;
   logo.height = 34;
@@ -34,7 +35,7 @@ export function renderSiteHeader(props: SiteHeaderProps): HTMLElement {
 
   for (const item of props.navigation) {
     const link = document.createElement("a");
-    link.href = item.href;
+    link.href = appHref(item.href);
     link.textContent = props.localize(item.label);
     nav.append(link);
   }

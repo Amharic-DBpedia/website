@@ -1,4 +1,5 @@
 import type { AppLayout } from "../app/layout";
+import { appHref } from "../app/paths";
 import { clear, externalLink } from "../dom/html";
 
 export function renderDocs(layout: AppLayout): void {
@@ -24,7 +25,7 @@ export function renderDocs(layout: AppLayout): void {
   list.className = "doc-list";
   for (const [label, href] of docs) {
     const item = document.createElement("li");
-    item.append(externalLink(href, label));
+    item.append(externalLink(appHref(href), label));
     list.append(item);
   }
 
