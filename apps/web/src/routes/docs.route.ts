@@ -29,9 +29,6 @@ export function renderDocs(layout: AppLayout): void {
     list.append(item);
   }
 
-  const apiDocs = externalLink("/api/docs", "Open interactive FastAPI documentation");
-  apiDocs.className = "button-link button-link--primary";
-
-  section.append(title, intro, list, apiDocs);
+  section.append(title, intro, list);
   layout.main.append(section);
 }

@@ -883,6 +883,77 @@ h3 {
   color: var(--color-primary);
 }
 
+.statistics-live {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-7) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-7) 0;
+}
+
+.statistics-live h2,
+.statistics-live h3,
+.statistics-live p {
+  margin-bottom: 0;
+}
+
+.statistics-live .metric-grid--wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.statistics-live__native {
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.statistics-explainer,
+.about-panel,
+.about-steps {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-5);
+}
+
+.statistics-explainer p,
+.statistics-explainer-card p,
+.about-panel p,
+.about-steps li {
+  color: var(--color-muted);
+}
+
+.statistics-explainer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-5) 0 var(--space-7);
+}
+
+.statistics-explainer-card {
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-5);
+}
+
+.about-page {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.about-steps ol {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
 .query-table td {
   max-width: 360px;
   overflow-wrap: anywhere;
@@ -973,7 +1044,12 @@ h3 {
   .team-grid,
   .resource-summary-grid,
   .dataset-list,
-  .doc-list {
+  .doc-list,
+  .statistics-explainer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .statistics-live .metric-grid--wide {
     grid-template-columns: 1fr;
   }
 

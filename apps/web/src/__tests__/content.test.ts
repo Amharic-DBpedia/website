@@ -10,8 +10,12 @@ describe("web content", () => {
     expect(navigation.map((item) => item.href)).toContain("/news");
   });
 
-  it("exposes backend automation as a primary navigation destination", () => {
-    expect(navigation.map((item) => item.href)).toContain("/automation");
+  it("exposes about as a primary navigation destination", () => {
+    expect(navigation.map((item) => item.href)).toContain("/about");
+  });
+
+  it("does not expose backend automation in primary navigation", () => {
+    expect(navigation.map((item) => item.href)).not.toContain("/automation");
   });
 
   it("publishes chapter news in reverse chronological order", () => {

@@ -19,9 +19,9 @@ export const languages = {
 
 export const navigation: readonly NavItem[] = [
   { href: "/", label: { en: "Home", am: "መነሻ", de: "Start" } },
+  { href: "/about", label: { en: "About", am: "ስለ ፕሮጀክቱ", de: "Über" } },
   { href: "/news", label: { en: "News", am: "ዜና", de: "Aktuelles" } },
   { href: "/statistics", label: { en: "Statistics", am: "ስታቲስቲክስ", de: "Statistik" } },
-  { href: "/automation", label: { en: "Automation", am: "አውቶሜሽን", de: "Automatisierung" } },
   { href: "/datasets", label: { en: "Datasets", am: "ዳታሴቶች", de: "Datensätze" } },
   { href: "/sparql", label: { en: "SPARQL", am: "SPARQL", de: "SPARQL" } },
   { href: "/resource/ደብረ_ብርሃን", label: { en: "Resource", am: "ምንጭ", de: "Ressource" } },
@@ -370,22 +370,6 @@ export const contributors: readonly Contributor[] = [
 
 export const teamMembers: readonly TeamMember[] = [
   {
-    name: "Prof. Dr. Ricardo Usbeck",
-    role: { en: "Mentor", am: "መሪ አማካሪ", de: "Mentor" },
-    affiliation: "Leuphana University of Lueneburg",
-    href: "https://www.linkedin.com/in/ricardo-usbeck/",
-  },
-  {
-    name: "Meti Bayissa",
-    role: {
-      en: "Mentor and GSoC 2024 contributor",
-      am: "መሪ አማካሪ እና GSoC 2024 አስተዋጽዖ አበርካች",
-      de: "Mentorin und GSoC-2024-Mitwirkende",
-    },
-    affiliation: "Addis Ababa University",
-    href: "https://www.linkedin.com/in/metiadanebayissa/",
-  },
-  {
     name: "Hizkiel Mitiku Alemayehu",
     role: {
       en: "Mentor and paper author",
@@ -406,6 +390,16 @@ export const teamMembers: readonly TeamMember[] = [
     href: "https://www.linkedin.com/in/tilahun-abedissa-47372a9a",
   },
   {
+    name: "Meti Bayissa",
+    role: {
+      en: "Mentor, GSoC 2024 contributor, and paper author",
+      am: "መሪ አማካሪ፣ GSoC 2024 አስተዋጽዖ አበርካች እና የጽሑፍ ደራሲ",
+      de: "Mentorin, GSoC-2024-Mitwirkende und Paper-Autorin",
+    },
+    affiliation: "Addis Ababa University",
+    href: "https://www.linkedin.com/in/metiadanebayissa/",
+  },
+  {
     name: "Andargachew Asfaw",
     role: {
       en: "GSoC 2025 contributor and paper author",
@@ -421,8 +415,28 @@ export const teamMembers: readonly TeamMember[] = [
     affiliation: "Paderborn University",
   },
   {
+    name: "Prof. Dr. Ricardo Usbeck",
+    role: {
+      en: "Mentor and paper author",
+      am: "መሪ አማካሪ እና የጽሑፍ ደራሲ",
+      de: "Mentor und Paper-Autor",
+    },
+    affiliation: "Leuphana University of Lueneburg",
+    href: "https://www.linkedin.com/in/ricardo-usbeck/",
+  },
+  {
     name: "Axel-Cyrille Ngonga Ngomo",
     role: { en: "Paper author", am: "የጽሑፍ ደራሲ", de: "Paper-Autor" },
     affiliation: "Paderborn University",
+  },
+  {
+    name: "Natnael Yohanes",
+    role: {
+      en: "Chapter contributor",
+      am: "የChapter አስተዋጽዖ አበርካች",
+      de: "Chapter-Mitwirkender",
+    },
+    affiliation: "Amharic DBpedia",
+    href: "https://www.linkedin.com/in/natnael-yohanes-software-engineer",
   },
 ];

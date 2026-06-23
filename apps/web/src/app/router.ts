@@ -27,6 +27,11 @@ const routes: readonly RouteDefinition[] = [
       import("../routes/home.route").then((m) => m.renderHome(layout)),
   },
   {
+    pathname: "/about",
+    handler: (_params, _url, layout) =>
+      import("../routes/about.route").then((m) => m.renderAbout(layout)),
+  },
+  {
     pathname: "/datasets",
     handler: (_params, _url, layout) =>
       import("../routes/datasets.route").then((m) => m.renderDatasets(layout)),
@@ -40,11 +45,6 @@ const routes: readonly RouteDefinition[] = [
     pathname: "/statistics",
     handler: (_params, _url, layout) =>
       import("../routes/statistics.route").then((m) => m.renderStatistics(layout)),
-  },
-  {
-    pathname: "/automation",
-    handler: (_params, _url, layout) =>
-      import("../routes/automation.route").then((m) => m.renderAutomation(layout)),
   },
   {
     pathname: "/query",
