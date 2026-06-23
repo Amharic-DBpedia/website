@@ -11,6 +11,16 @@ This folder contains the browser-facing project only:
 Backend automation, extraction scripts, runtime data folders, and backend
 documentation now live in the sibling `../agentic-dbpedia/` folder.
 
+## Current Frontend Scope
+
+- Static chapter pages for news, datasets, statistics, SPARQL, resources, and team.
+- Resource explorer examples are checked against the public Amharic DBpedia SPARQL endpoint.
+- The top navigation links to the Amharic DBpedia GitHub organization at
+  <https://github.com/AmharicDBpedia>.
+- Amharic UI text falls back to English when the Amharic copy is missing or is not a reliable
+  translation.
+- Tentris is embedded on the SPARQL page with a preconnect hint for faster startup.
+
 ## Prerequisites
 
 - Node.js 22+

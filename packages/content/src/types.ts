@@ -5,6 +5,7 @@ export type LocalizedText = Readonly<Record<SupportedLanguage, string>>;
 export interface NavItem {
   readonly label: LocalizedText;
   readonly href: string;
+  readonly icon?: "github";
 }
 
 export interface ResourceLink {
