@@ -62,9 +62,9 @@ const routes: readonly RouteDefinition[] = [
       import("../routes/team.route").then((m) => m.renderTeam(layout)),
   },
   {
-    pathname: "/docs",
+    pathname: "/resource",
     handler: (_params, _url, layout) =>
-      import("../routes/docs.route").then((m) => m.renderDocs(layout)),
+      import("../routes/resource-directory.route").then((m) => m.renderResourceDirectory(layout)),
   },
   {
     pathname: "/resource/:title",
