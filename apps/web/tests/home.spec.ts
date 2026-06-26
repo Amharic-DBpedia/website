@@ -101,3 +101,74 @@ test("resource route keeps Amharic titles readable when endpoint has no triples"
   await expect(page.getByText("No triples returned")).toBeVisible();
   await expect(page.getByText("%25E1")).toHaveCount(0);
 });
+
+test("resource predicate opens an explanatory property page", async ({ page }) => {
+  await page.route("**/sparql?**", async (route) => {
+    const query = new URL(route.request().url()).searchParams.get("query") ?? "";
+    const isPredicateUsage = query.includes(
+      "?subject <http://www.w3.org/2000/01/rdf-schema#label> ?object",
+    );
+
+    await route.fulfill({
+      contentType: "application/sparql-results+json",
+      body: JSON.stringify(
+        isPredicateUsage
+          ? {
+              head: { vars: ["subject", "object"] },
+              results: {
+                bindings: [
+                  {
+                    subject: {
+                      type: "uri",
+                      value: "http://am.dbpedia.org/resource/ዳኛቸው_ወርቁ",
+                    },
+                    object: {
+                      type: "literal",
+                      value: "ዳኛቸው ወርቁ",
+                      "xml:lang": "am",
+                    },
+                  },
+                ],
+              },
+            }
+          : {
+              head: { vars: ["predicate", "object"] },
+              results: {
+                bindings: [
+                  {
+                    predicate: {
+                      type: "uri",
+                      value: "http://www.w3.org/2000/01/rdf-schema#label",
+                    },
+                    object: {
+                      type: "literal",
+                      value: "ዳኛቸው ወርቁ",
+                      "xml:lang": "am",
+                    },
+                  },
+                ],
+              },
+            },
+      ),
+    });
+  });
+
+  await page.goto(appPath("/resource/ዳኛቸው ወርቁ"));
+  const predicate = page.getByRole("link", { name: "rdfs:label" });
+
+  await expect(predicate).toHaveAttribute(
+    "href",
+    new RegExp(`${appPath("/property/http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23label")}$`),
+  );
+  await predicate.click();
+
+  await expect(page.getByRole("heading", { name: "label" })).toBeVisible();
+  await expect(
+    page.locator(".property-header").getByText("A human-readable name for the subject resource."),
+  ).toBeVisible();
+  await expect(page.getByText("Read this as RDF")).toBeVisible();
+  await expect(page.getByText("Use this property to find the display name")).toBeVisible();
+  await expect(page.getByText("Triple pattern")).toBeVisible();
+  await expect(page.getByText("Usage in Amharic DBpedia")).toBeVisible();
+  await expect(page.getByRole("link", { name: "am:ዳኛቸው ወርቁ" })).toBeVisible();
+});

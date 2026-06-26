@@ -71,6 +71,11 @@ const routes: readonly RouteDefinition[] = [
     handler: (params, _url, layout) =>
       import("../routes/resource.route").then((m) => m.renderResource(layout, params.title ?? "")),
   },
+  {
+    pathname: "/property/:iri",
+    handler: (params, _url, layout) =>
+      import("../routes/property.route").then((m) => m.renderProperty(layout, params.iri ?? "")),
+  },
 ];
 
 export function installRouter(layout: AppLayout): void {
