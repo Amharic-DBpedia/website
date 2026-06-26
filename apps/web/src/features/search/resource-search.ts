@@ -14,7 +14,7 @@ export function renderResourceSearch(layout: AppLayout): HTMLElement {
   input.id = "resource-title";
   input.name = "resource";
   input.type = "search";
-  input.placeholder = "ወርቁ_ማሞ";
+  input.placeholder = "ዳኛቸው ወርቁ";
   input.autocomplete = "off";
 
   const button = document.createElement("button");

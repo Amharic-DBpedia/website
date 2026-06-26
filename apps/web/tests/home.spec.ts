@@ -15,6 +15,10 @@ test("renders chapter homepage and resource search", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Latest news" })).toBeVisible();
   await expect(page.locator(".news-item")).toHaveCount(3);
   await expect(page.getByRole("link", { name: "News", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+    "href",
+    "https://github.com/AmharicDBpedia",
+  );
 });
 
 test("renders a dedicated news destination from the primary navigation", async ({ page }) => {
@@ -37,18 +41,46 @@ test("embeds Tentris inside the SPARQL page", async ({ page }) => {
   );
 });
 
-test("shows FastAPI health on the automation page", async ({ page }) => {
-  await page.route("**/api/health", async (route) => {
-    await route.fulfill({
-      contentType: "application/json",
-      body: JSON.stringify({ status: "ok" }),
-    });
-  });
+test("renders the non-technical about page", async ({ page }) => {
+  await page.goto(appPath("/about"));
 
-  await page.goto(appPath("/automation"));
+  await expect(page.getByRole("heading", { name: "About Amharic DBpedia" })).toBeVisible();
+  await expect(page.getByText("The idea in plain language")).toBeVisible();
+  await expect(page.getByText("Why Amharic needs its own chapter")).toBeVisible();
+});
 
-  await expect(page.getByRole("heading", { name: "Automation API" })).toBeVisible();
-  await expect(page.getByText("API is available")).toBeVisible();
+test("renders static statistics with clickable definitions", async ({ page }) => {
+  await page.goto(appPath("/statistics"));
+
+  await expect(page.getByText("Latest generated extraction statistics")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "How to read these numbers" })).toHaveCount(0);
+  await expect(page.getByText("97")).toBeVisible();
+  await page.getByRole("button", { name: /97\s+Mapped templates/i }).click();
+  await expect(page.getByRole("dialog", { name: "Mapped templates" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open Amharic mappings" })).toHaveAttribute(
+    "href",
+    "https://mappings.dbpedia.org/index.php/Mapping_am",
+  );
+  await page.mouse.click(8, 8);
+  await expect(page.getByRole("dialog", { name: "Mapped templates" })).toHaveCount(0);
+  await page.getByRole("button", { name: /77.29%\s+Property coverage/i }).click();
+  await expect(page.getByRole("link", { name: "Open DBpedia ontology example" })).toHaveAttribute(
+    "href",
+    "https://mappings.dbpedia.org/index.php/OntologyClass%3APerson",
+  );
+});
+
+test("renders a dedicated resource landing page", async ({ page }) => {
+  await page.goto(appPath("/resource"));
+
+  await expect(page.getByRole("heading", { name: "Resource explorer" })).toBeVisible();
+  await expect(page.getByLabel("Resource title or IRI")).toBeVisible();
+  await expect(page.getByPlaceholder("ዳኛቸው ወርቁ")).toBeVisible();
+  await expect(page.getByRole("link", { name: "አዲስ አበባ" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "ደብረ ብርሃን" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "ኢትዮጵያ" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "ፓውል ሃርዲንግ" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "ዳኛቸው ወርቁ" })).toBeVisible();
 });
 
 test("resource route keeps Amharic titles readable when endpoint has no triples", async ({
@@ -61,11 +93,82 @@ test("resource route keeps Amharic titles readable when endpoint has no triples"
     });
   });
 
-  await page.goto(appPath("/resource/ወርቁ_ማሞ"));
+  await page.goto(appPath("/resource/ዳኛቸው ወርቁ"));
 
   await expect(
-    page.getByRole("link", { name: "http://am.dbpedia.org/resource/ወርቁ_ማሞ" }),
+    page.getByRole("link", { name: "http://am.dbpedia.org/resource/ዳኛቸው_ወርቁ" }),
   ).toBeVisible();
   await expect(page.getByText("No triples returned")).toBeVisible();
   await expect(page.getByText("%25E1")).toHaveCount(0);
+});
+
+test("resource predicate opens an explanatory property page", async ({ page }) => {
+  await page.route("**/sparql?**", async (route) => {
+    const query = new URL(route.request().url()).searchParams.get("query") ?? "";
+    const isPredicateUsage = query.includes(
+      "?subject <http://www.w3.org/2000/01/rdf-schema#label> ?object",
+    );
+
+    await route.fulfill({
+      contentType: "application/sparql-results+json",
+      body: JSON.stringify(
+        isPredicateUsage
+          ? {
+              head: { vars: ["subject", "object"] },
+              results: {
+                bindings: [
+                  {
+                    subject: {
+                      type: "uri",
+                      value: "http://am.dbpedia.org/resource/ዳኛቸው_ወርቁ",
+                    },
+                    object: {
+                      type: "literal",
+                      value: "ዳኛቸው ወርቁ",
+                      "xml:lang": "am",
+                    },
+                  },
+                ],
+              },
+            }
+          : {
+              head: { vars: ["predicate", "object"] },
+              results: {
+                bindings: [
+                  {
+                    predicate: {
+                      type: "uri",
+                      value: "http://www.w3.org/2000/01/rdf-schema#label",
+                    },
+                    object: {
+                      type: "literal",
+                      value: "ዳኛቸው ወርቁ",
+                      "xml:lang": "am",
+                    },
+                  },
+                ],
+              },
+            },
+      ),
+    });
+  });
+
+  await page.goto(appPath("/resource/ዳኛቸው ወርቁ"));
+  const predicate = page.getByRole("link", { name: "rdfs:label" });
+
+  await expect(predicate).toHaveAttribute(
+    "href",
+    new RegExp(`${appPath("/property/http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23label")}$`),
+  );
+  await predicate.click();
+
+  await expect(page.getByRole("heading", { name: "label" })).toBeVisible();
+  await expect(
+    page.locator(".property-header").getByText("A human-readable name for the subject resource."),
+  ).toBeVisible();
+  await expect(page.getByText("Read this as RDF")).toBeVisible();
+  await expect(page.getByText("Use this property to find the display name")).toBeVisible();
+  await expect(page.getByText("Triple pattern")).toBeVisible();
+  await expect(page.getByText("Usage in Amharic DBpedia")).toBeVisible();
+  await expect(page.getByRole("link", { name: "am:ዳኛቸው ወርቁ" })).toBeVisible();
 });
